@@ -1,0 +1,145 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract MainContract 
+{
+
+    address public dean;
+
+    mapping(address => bool) public isProfessor;
+    mapping(address => bool) public isAssociateDean;
+    mapping(uint => Marksheet) public marksheets;
+    uint[] public studentList;
+
+    struct Marksheet 
+    {
+        uint studentId;
+        uint marks;
+        address professorAddress;
+        bool isValidated;
+        address validatedBy;
+        uint timestamp;
+        bytes32 fileHash;
+        bool isUploaded;
+        address uploadedBy;
+    }
+
+    modifier onlyDean() 
+    {
+        require(msg.sender == dean, "Caller is not the Dean");
+        _;
+    }
+
+    modifier onlyProfessor() 
+    {
+        require(isProfessor[msg.sender], "Caller is not a Professor");
+        _;
+    }
+
+    modifier onlyAssociateDean() 
+    {
+        require(isAssociateDean[msg.sender], "Caller is not an Associate Dean");
+        _;
+    }
+
+    constructor(address[] memory _professors, address[] memory _associateDeans) 
+    {
+        dean = msg.sender;
+
+        require(_professors.length > 0, "No professors provided");
+        require(_associateDeans.length > 0, "No associate deans provided");
+
+
+        for (uint i = 0; i < _professors.length; i++) 
+        {
+            require(_professors[i] != address(0), "Professor address cannot be zero");
+            isProfessor[_professors[i]] = true;
+        }
+
+        for (uint i = 0; i < _associateDeans.length; i++) 
+        {
+            require(_associateDeans[i] != address(0), "Associate Dean address cannot be zero");
+            isAssociateDean[_associateDeans[i]] = true;
+        }
+    }
+
+
+    function upload(uint _studentId, uint _marks) external onlyProfessor 
+    {
+        require(marksheets[_studentId].professorAddress == address(0), "Marksheet already initiated for this student");
+
+        marksheets[_studentId].studentId = _studentId;
+        marksheets[_studentId].marks = _marks;
+        marksheets[_studentId].professorAddress = msg.sender;
+    }
+
+    function validate(uint _studentId, uint _nonce) external onlyAssociateDean 
+    {
+        Marksheet storage marksheet = marksheets[_studentId];
+        require(marksheet.professorAddress != address(0), "Marksheet does not exist");
+        require(!marksheet.isValidated, "Marksheet already validated");
+
+        bytes32 verificationHash = keccak256(abi.encodePacked(_nonce, marksheet.studentId, marksheet.marks, marksheet.professorAddress));
+
+        // Check PoW: first byte of the hash must be 0.
+        require(verificationHash[0] == 0, "Proof of Work is invalid: first byte is not zero");
+
+        marksheet.isValidated = true;
+        marksheet.validatedBy = msg.sender;
+        marksheet.timestamp = block.timestamp;
+
+        // Calculate and store the final fileHash of the validated data.
+        marksheet.fileHash = keccak256(abi.encodePacked(
+            marksheet.studentId,
+            marksheet.marks,
+            marksheet.professorAddress,
+            marksheet.isValidated,
+            marksheet.validatedBy,
+            marksheet.timestamp
+        ));
+    }
+
+    function finalUpload(uint _studentId) external onlyDean 
+    {
+        Marksheet storage marksheet = marksheets[_studentId];
+        require(marksheet.isValidated, "Marksheet has not been validated by an Associate Dean yet");
+        require(!marksheet.isUploaded, "Marksheet has already been finalized");
+
+        studentList.push(_studentId);
+        marksheet.isUploaded = true;
+        marksheet.uploadedBy = dean;
+    }
+
+    function viewMarksheet(uint _studentId) external view returns (Marksheet memory) 
+    {
+        return marksheets[_studentId];
+    }
+
+    function verify(
+        uint _studentId,
+        uint _marks,
+        address _professorAddress,
+        bool _isValidated,
+        address _validatedBy,
+        uint _timestamp
+    ) external view returns (bool)
+    {
+        Marksheet storage originalMarksheet = marksheets[_studentId];
+
+        if (originalMarksheet.fileHash == bytes32(0))
+        {
+            return false;
+        }
+
+        bytes32 verificationHash = keccak256(abi.encodePacked(
+            _studentId,
+            _marks,
+            _professorAddress,
+            _isValidated,
+            _validatedBy,
+            _timestamp
+        ));
+
+        return (verificationHash == originalMarksheet.fileHash);
+    }
+}

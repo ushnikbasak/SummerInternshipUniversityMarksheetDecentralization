@@ -1,0 +1,335 @@
+html {
+  font-size: 10px;
+  font-family: sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#App {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  --primary-color: #1266cc;
+  --secondary-color: #f96400;
+  --flash-color: rgb(89, 255, 0);
+  --gray: #999;
+  --light-gray: #e0e0e0;
+  --dark-gray: #777;
+}
+
+#App .container {
+  width: 40%;
+  min-width: 60rem;
+  max-width: 75rem;
+  height: 100%;
+}
+
+/* NAVBAR STYLES */
+.navbar {
+  position: fixed; /* keep navbar fixed on top */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* on top of other elements */
+  width: 100%;
+  background-color: var(--primary-color);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+}
+
+.navbar h2 {
+  font-size: 2rem;
+  color: black;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navbar li {
+  display: inline;
+  background-color: transparent;
+  border: none;
+  color: black;
+  font-size: 16px;
+  /* cursor: pointer; */
+  /* margin-right: 15px; */
+  /* padding: 5px 10px; */
+  font-family: sans-serif;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.4rem;
+  transition: color 0.3s;
+}
+
+.navbar a:hover {
+  color: var(--secondary-color);
+}
+
+.connect-wallet-button {
+  margin-left: 2rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1.2rem;
+  border: none;
+  background-color: green;
+  color: var(--primary-color);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.nav-role-button {
+  background-color: transparent;
+  border: none;
+  color: black;
+  font-size: 1.4rem;
+  cursor: pointer;
+  /* margin-right: 15px; */
+  /* padding: 5px 10px; */
+  font-family: sans-serif;
+}
+
+.navbar button:hover {
+  background-color: var(--light-gray);
+}
+
+.container {
+  padding-top: 5rem;
+}
+
+
+/* HOMEPAGE STYLES */
+.home-container {
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.home-container h3 {
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+}
+
+.home-container p {
+  font-size: 1.6rem;
+  margin-bottom: 3rem;
+}
+
+.role-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.role-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 22rem;
+  height: 18rem;
+  padding: 2rem;
+  border-radius: 2rem;
+  text-decoration: none;
+  color: black;
+  /*box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);*/
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+  text-align: center;
+}
+
+
+.role-card h4 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.role-card p {
+  font-size: 1.4rem;
+}
+
+.role-card:nth-child(1) {
+  background-color: #ffffff; /* Professor - Blue #007bff*/
+}
+
+.role-card:nth-child(2) {
+  background-color: #ffffff; /* Associate Dean - Green #28a745*/
+}
+
+.role-card:nth-child(3) {
+  background-color: #ffffff; /* Dean - Yellow #db8b0a*/
+  /*color: black;*/
+}
+
+.role-card:nth-child(4) {
+  background-color: #ffffff;/* Verifier - Red #dc3545*/
+}
+
+.role-card:nth-child(5) {
+  background-color: #ffffff; /* Verifier - Lavender #aa35dc*/
+}
+
+/* Hover effect */
+.role-card:hover {
+  transform: translateY(0px); /*don't forget to make it -0.5px */
+  /*box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);*/
+}
+
+.role-card .emoji {
+  font-size: 4rem;
+  margin-bottom: 1.2rem;
+  transition: transform 0.3s;
+}
+
+.role-card:hover .emoji {
+  transform: scale(1.1);
+}
+
+code {
+  display: block;
+  white-space: pre-wrap;
+  padding: 1.2rem 2rem;
+  border-radius: 1rem;
+  background-color: var(--light-gray);
+  font-size: 1.4rem;
+}
+
+code span {
+  transition: all 0.3s;
+}
+
+code span.primary-color {
+  color: var(--primary-color);
+}
+
+code span.secondary-color {
+  color: var(--secondary-color);
+}
+
+code span.dim-color {
+  color: var(--gray);
+}
+
+code span.flash {
+  background-color: var(--flash-color);
+}
+
+details {
+  margin: 1.6rem 0;
+  padding: 0.5rem 2rem 0.5rem 0;
+  border: 1px solid var(--light-gray);
+  border-radius: 1rem;
+}
+
+details :not(summary, span) {
+  margin-left: 2.55rem;
+}
+
+details summary {
+  padding: 1.2rem;
+  cursor: pointer;
+}
+
+p,
+details code {
+  margin-top: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+p {
+  line-height: 2.6rem;
+}
+
+p span.code {
+  font-family: monospace;
+  color: var(--gray);
+}
+
+hr {
+  margin: 4rem 0;
+}
+
+#App .container .welcome h1 {
+  padding-top: 7.5rem;
+  font-size: 2.6rem;
+}
+
+#App .container .demo .contract-container {
+  display: flex;
+}
+
+#App .container .demo .contract-container code {
+  min-width: 42rem;
+  border-radius: 1rem 0 0 1rem;
+}
+
+#App .container .demo .contract-container .btns {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 0 1rem;
+  background-color: var(--gray);
+  border-radius: 0 1rem 1rem 0;
+}
+
+#App .container .demo .contract-container .btns > * {
+  width: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+  background-color: var(--light-gray);
+  border: none;
+  font-size: 1.2rem;
+  font-family: monospace;
+  cursor: pointer;
+}
+
+#App .container .demo .contract-container .btns > *:hover {
+  background-color: var(--dark-gray);
+}
+
+#App .container .demo .contract-container .btns .input-btn input {
+  width: 4rem;
+  text-align: center;
+  font-family: monospace;
+  font-size: 1.2rem;
+}
+
+#App .container footer {
+  padding-bottom: 7.5rem;
+}
+
+#App .container footer a {
+  display: inline-block;
+  margin: 2rem 1rem 0 0;
+}
+
+/* .status-message {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.marksheet-details {
+  background: #f9f9f9;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 8px;
+} */

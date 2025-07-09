@@ -7,6 +7,7 @@ const Professor = () => {
   const [marks, setMarks] = useState("");
   const [status, setStatus] = useState("");
   const [isProfessor, setIsProfessor] = useState(false);
+  const [uploadedStudents, setUploadedStudents] = useState([]);
 
   useEffect(() => {
     const checkRole = async () => {
@@ -44,6 +45,39 @@ const Professor = () => {
     }
   };
 
+  const fetchMyUploadedStudents = async () => {
+    console.log("Button clicked - fetching uploaded students...");
+    if (!contract || !account) return;
+
+    try {
+      const length = await contract.methods.studentListLength().call();
+      const results = [];
+
+      for (let i = 0; i < length; i++) {
+        const studentId = await contract.methods.studentList(i).call();
+        const m = await contract.methods.viewMarksheet(studentId).call();
+
+        if (m.professorAddress.toLowerCase() === account.toLowerCase()) {
+          results.push({
+            studentId: m.studentId,
+            marks: m.marks,
+            isValidated: m.isValidated,
+            isUploaded: m.isUploaded
+          });
+        }
+      }
+
+      if (results.length === 0) {
+        alert("❗ You haven't uploaded any marksheets.");
+      }
+
+      setUploadedStudents(results);
+      
+    } catch (err) {
+      console.error("Error fetching uploaded students:", err.message);
+    }
+  };
+
   return (
     <div className="form-box">
       <h3>Professor Panel</h3>
@@ -65,6 +99,35 @@ const Professor = () => {
       </button>
       {!isProfessor && <p style={{ color: "red" }}>Only a professor can upload marksheets.</p>}
       <p>{status}</p>
+      <button onClick={fetchMyUploadedStudents} disabled={!isProfessor}>
+        View My Uploaded Students
+      </button>
+
+      {uploadedStudents.length > 0 && (
+        <div className="uploaded-students-section">
+          <h4>My Uploaded Students</h4>
+          <table className="uploaded-students-table">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Marks</th>
+                <th>Validated</th>
+                <th>Final Uploaded</th>
+              </tr>
+            </thead>
+            <tbody>
+              {uploadedStudents.map((s, index) => (
+                <tr key={index}>
+                  <td>{s.studentId}</td>
+                  <td>{s.marks}</td>
+                  <td>{s.isValidated ? "✅" : "❌"}</td>
+                  <td>{s.isUploaded ? "✅" : "❌"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

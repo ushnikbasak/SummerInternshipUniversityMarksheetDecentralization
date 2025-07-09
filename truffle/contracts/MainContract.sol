@@ -63,6 +63,10 @@ contract MainContract
         }
     }
 
+    function studentListLength() external view returns (uint) 
+    {
+        return studentList.length;
+    }
 
     function upload(uint _studentId, uint _marks) external onlyProfessor 
     {
@@ -71,6 +75,8 @@ contract MainContract
         marksheets[_studentId].studentId = _studentId;
         marksheets[_studentId].marks = _marks;
         marksheets[_studentId].professorAddress = msg.sender;
+
+        studentList.push(_studentId);
     }
 
     function validate(uint _studentId, uint _nonce) external onlyAssociateDean 

@@ -337,3 +337,45 @@ hr {
   margin-top: 20px;
   border-radius: 8px;
 } */
+
+.uploaded-students-section {
+  margin-top: 3rem;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 1rem;
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.uploaded-students-section h4 {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.uploaded-students-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.4rem;
+  background-color: white;
+}
+
+.uploaded-students-table th,
+.uploaded-students-table td {
+  border: 1px solid var(--light-gray);
+  padding: 1rem 1.5rem;
+  text-align: center;
+}
+
+.uploaded-students-table th {
+  background-color: #f0f8ff;
+  color: black;
+}
+
+.uploaded-students-table tr:nth-child(even) {
+  background-color: #f0f8ff;
+}
+
+/* .uploaded-students-table tr:hover {
+  background-color: #e6f2ff;
+} */

@@ -2,11 +2,11 @@ const MainContract = artifacts.require("./MainContract.sol");
 
 module.exports = async function (deployer, network, accounts) {
   // Choose professor and associate dean accounts
-  const professors = [accounts[2]];
-  const associateDeans = [accounts[3]];
+  const professors = [accounts[1]];
+  const associateDeans = [accounts[2]];
 
   // Log the selected accounts for clarity
-  console.log("Deploying mainContract from:", accounts[1]);
+  console.log("Deploying mainContract from:", accounts[0]);
   console.log("Professors:", professors);
   console.log("Associate Deans:", associateDeans);
 

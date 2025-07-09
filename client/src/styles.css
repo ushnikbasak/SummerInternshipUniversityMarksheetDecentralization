@@ -64,7 +64,7 @@ html {
   border: none;
   color: black;
   font-size: 16px;
-  /* cursor: pointer; */
+  cursor: pointer;
   /* margin-right: 15px; */
   /* padding: 5px 10px; */
   font-family: sans-serif;
@@ -84,13 +84,17 @@ html {
 .connect-wallet-button {
   margin-left: 2rem;
   padding: 0.6rem 1.2rem;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   border: none;
-  background-color: green;
-  color: var(--primary-color);
+  background-color: rgb(203, 5, 170);
+  color: white;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-family: monospace;
+  font-family: Franklin Gothic Medium;
+}
+
+.connect-wallet-button:hover {
+  color: rgb(203, 5, 170);
 }
 
 .nav-role-button {
@@ -99,13 +103,13 @@ html {
   color: black;
   font-size: 1.4rem;
   cursor: pointer;
-  /* margin-right: 15px; */
-  /* padding: 5px 10px; */
+  /* margin-right: 15px;
+  padding: 5px 10px; */
   font-family: sans-serif;
 }
 
 .navbar button:hover {
-  background-color: var(--light-gray);
+  background-color: var(--dark-gray);
 }
 
 .container {
@@ -146,8 +150,8 @@ html {
   padding: 2rem;
   border-radius: 2rem;
   text-decoration: none;
-  color: black;
-  /*box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);*/
+  color: white;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.3s;
   text-align: center;
@@ -164,30 +168,30 @@ html {
 }
 
 .role-card:nth-child(1) {
-  background-color: #ffffff; /* Professor - Blue #007bff*/
+  background-color: #007bff; /* Professor - Blue */
 }
 
 .role-card:nth-child(2) {
-  background-color: #ffffff; /* Associate Dean - Green #28a745*/
+  background-color: #28a745; /* Associate Dean - Green */
 }
 
 .role-card:nth-child(3) {
-  background-color: #ffffff; /* Dean - Yellow #db8b0a*/
+  background-color: #db8b0a; /* Dean - Yellow */
   /*color: black;*/
 }
 
 .role-card:nth-child(4) {
-  background-color: #ffffff;/* Verifier - Red #dc3545*/
+  background-color: #dc3545;/* Verifier - Red */
 }
 
 .role-card:nth-child(5) {
-  background-color: #ffffff; /* Verifier - Lavender #aa35dc*/
+  background-color: #aa35dc; /* Verifier - Lavender */
 }
 
 /* Hover effect */
 .role-card:hover {
-  transform: translateY(0px); /*don't forget to make it -0.5px */
-  /*box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);*/
+  transform: translateY(-3px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);
 }
 
 .role-card .emoji {

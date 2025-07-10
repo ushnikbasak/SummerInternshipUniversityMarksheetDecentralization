@@ -89,7 +89,7 @@ const Dean = () => {
 
         if (m.isUploaded) {
           finalized.push(studentData);
-        } else {
+        } else if (m.isValidated) {
           notFinalized.push(studentData);
         }
       }

@@ -9,6 +9,11 @@ const AssociateDean = () => {
   const [status, setStatus] = useState("");
   const [nonce, setNonce] = useState(null);
   const [isAssociateDean, setIsAssociateDean] = useState(false);
+  const [validatedByMe, setValidatedByMe] = useState([]);
+  const [pendingValidation, setPendingValidation] = useState([]);
+  const [showPending, setShowPending] = useState(false);
+  const [showValidated, setShowValidated] = useState(false);
+
 
   const zeroAddress = "0x0000000000000000000000000000000000000000";
 
@@ -56,6 +61,47 @@ const AssociateDean = () => {
     fetchMarksheet();
   }, [studentId, contract]);
 
+  useEffect(() => {
+    const fetchAllStudents = async () => {
+      if (!contract || !account) return;
+
+      try {
+        const length = await contract.methods.studentListLength().call();
+        const validated = [];
+        const pending = [];
+
+        for (let i = 0; i < length; i++) {
+          const studentId = await contract.methods.studentList(i).call();
+          const m = await contract.methods.viewMarksheet(studentId).call();
+
+          if (m.professorAddress !== zeroAddress) {
+            if (m.isValidated && m.validatedBy.toLowerCase() === account.toLowerCase()) {
+              validated.push({
+                studentId: m.studentId,
+                marks: m.marks,
+                professorAddress: m.professorAddress,
+                timestamp: m.timestamp,
+              });
+            } else if (!m.isValidated) {
+              pending.push({
+                studentId: m.studentId,
+                marks: m.marks,
+                professorAddress: m.professorAddress,
+              });
+            }
+          }
+        }
+
+        setValidatedByMe(validated);
+        setPendingValidation(pending);
+      } catch (err) {
+        console.error("Error loading student data:", err);
+      }
+    };
+
+    fetchAllStudents();
+  }, [contract, account]);
+
   const calculateNonce = async () => {
     if (!marksheet) return;
 
@@ -98,9 +144,24 @@ const AssociateDean = () => {
       await contract.methods.validate(studentId, nonce).send({ from: account });
       setStatus("✅ Marksheet validated successfully!");
 
-      // Refresh marksheet data
       const updated = await contract.methods.viewMarksheet(studentId).call();
       setMarksheet(updated);
+
+      // 👇 Add to validatedByMe
+      setValidatedByMe((prev) => [
+        ...prev,
+        {
+          studentId: updated.studentId,
+          marks: updated.marks,
+          professorAddress: updated.professorAddress,
+          timestamp: updated.timestamp,
+        },
+      ]);
+
+      // 👇 Remove from pendingValidation
+      setPendingValidation((prev) =>
+        prev.filter((s) => s.studentId.toString() !== studentId.toString())
+      );
     } catch (err) {
       console.error("Validation failed:", err);
       setStatus("❌ Validation failed. Check console for details.");
@@ -109,6 +170,7 @@ const AssociateDean = () => {
 
   return (
     <div className="form-box">
+      <br></br>
       <h3>Associate Dean Panel</h3>
       <p>Connected as: {account || "Not connected"}</p>
       <input
@@ -178,6 +240,82 @@ const AssociateDean = () => {
           Calculated Nonce: <strong>{nonce}</strong>
         </p>
       )}
+    
+
+      <div className="lists-container">
+
+        {/* ✅ Validated List (collapsible) */}
+        <div className="list-box">
+          <button 
+          onClick={() => setShowValidated(!showValidated)}
+          disabled={!isAssociateDean}
+          >
+            ✅ Validated Students {showValidated ? "▲" : "▼"}
+          </button>
+
+          {showValidated && validatedByMe.length > 0 && (
+            <table className="uploaded-students-table">
+              <thead>
+                <tr>
+                  <th>Student ID</th>
+                  <th>Marks</th>
+                  <th>Professor</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody>
+                {validatedByMe.map((s, index) => (
+                  <tr key={index}>
+                    <td>{s.studentId}</td>
+                    <td>{s.marks}</td>
+                    <td>{s.professorAddress}</td>
+                    <td>{s.timestamp}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          {showValidated && validatedByMe.length === 0 && (
+            <p>No validated marksheets by you yet.</p>
+          )}
+        </div>
+
+        {/* ❌ Unvalidated List (collapsible) */}
+        <div className="list-box">
+          <button 
+          onClick={() => setShowPending(!showPending)}
+          disabled={!isAssociateDean}
+          >
+            ❌ Unvalidated Students {showValidated ? "▲" : "▼"}
+          </button>
+
+          {showPending && pendingValidation.length > 0 && (
+            <table className="uploaded-students-table">
+              <thead>
+                <tr>
+                  <th>Student ID</th>
+                  <th>Marks</th>
+                  <th>Professor</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingValidation.map((s, index) => (
+                  <tr key={index}>
+                    <td>{s.studentId}</td>
+                    <td>{s.marks}</td>
+                    <td>{s.professorAddress}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          {showPending && pendingValidation.length === 0 && (
+            <p>No unvalidated marksheets found.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

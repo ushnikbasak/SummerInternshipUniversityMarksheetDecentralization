@@ -38,12 +38,13 @@ html {
   left: 0;
   z-index: 1000; /* on top of other elements */
   width: 100%;
-  background-color: var(--primary-color);
+  background-color: beige;
   padding: 1rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: black;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
 }
 
 .navbar h2 {
@@ -376,6 +377,68 @@ hr {
   background-color: #f0f8ff;
 }
 
-/* .uploaded-students-table tr:hover {
-  background-color: #e6f2ff;
-} */
+.uploaded-students-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.uploaded-students-table th,
+.uploaded-students-table td {
+  border: 1px solid #ccc;
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.uploaded-students-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.marksheet-details button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.marksheet-details button:hover {
+  background-color: #0056b3;
+}
+
+.lists-container {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.list-box {
+  flex: 1;
+  min-width: 30rem;
+  max-width: 48%;
+  background-color: #f9f9f9;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.list-box button {
+  background-color: #333;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.list-box button:hover {
+  background-color: #555;
+}

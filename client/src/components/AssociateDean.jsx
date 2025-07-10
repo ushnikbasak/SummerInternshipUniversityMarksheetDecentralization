@@ -70,8 +70,14 @@ const AssociateDean = () => {
         const validated = [];
         const pending = [];
 
+        const seen = new Set();
+
         for (let i = 0; i < length; i++) {
           const studentId = await contract.methods.studentList(i).call();
+
+          if (seen.has(studentId)) continue;
+          seen.add(studentId);
+
           const m = await contract.methods.viewMarksheet(studentId).call();
 
           if (m.professorAddress !== zeroAddress) {
@@ -244,6 +250,41 @@ const AssociateDean = () => {
 
       <div className="lists-container">
 
+        {/* ❌ Unvalidated List (collapsible) */}
+        <div className="list-box">
+          <button 
+          onClick={() => setShowPending(!showPending)}
+          disabled={!isAssociateDean}
+          >
+            ❌ Unvalidated Students {showValidated ? "▲" : "▼"}
+          </button>
+
+          {showPending && pendingValidation.length > 0 && (
+            <table className="uploaded-students-table">
+              <thead>
+                <tr>
+                  <th>Student ID</th>
+                  <th>Marks</th>
+                  <th>Professor</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingValidation.map((s, index) => (
+                  <tr key={index}>
+                    <td>{s.studentId}</td>
+                    <td>{s.marks}</td>
+                    <td>{s.professorAddress}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          {showPending && pendingValidation.length === 0 && (
+            <p>No unvalidated marksheets found.</p>
+          )}
+        </div>
+
         {/* ✅ Validated List (collapsible) */}
         <div className="list-box">
           <button 
@@ -278,41 +319,6 @@ const AssociateDean = () => {
 
           {showValidated && validatedByMe.length === 0 && (
             <p>No validated marksheets by you yet.</p>
-          )}
-        </div>
-
-        {/* ❌ Unvalidated List (collapsible) */}
-        <div className="list-box">
-          <button 
-          onClick={() => setShowPending(!showPending)}
-          disabled={!isAssociateDean}
-          >
-            ❌ Unvalidated Students {showValidated ? "▲" : "▼"}
-          </button>
-
-          {showPending && pendingValidation.length > 0 && (
-            <table className="uploaded-students-table">
-              <thead>
-                <tr>
-                  <th>Student ID</th>
-                  <th>Marks</th>
-                  <th>Professor</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pendingValidation.map((s, index) => (
-                  <tr key={index}>
-                    <td>{s.studentId}</td>
-                    <td>{s.marks}</td>
-                    <td>{s.professorAddress}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-
-          {showPending && pendingValidation.length === 0 && (
-            <p>No unvalidated marksheets found.</p>
           )}
         </div>
       </div>

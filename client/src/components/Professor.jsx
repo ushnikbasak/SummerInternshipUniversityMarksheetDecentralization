@@ -62,8 +62,14 @@ const Professor = () => {
       const length = await contract.methods.studentListLength().call();
       const results = [];
 
+      const seen = new Set();
+
       for (let i = 0; i < length; i++) {
         const studentId = await contract.methods.studentList(i).call();
+
+        if (seen.has(studentId)) continue;
+        seen.add(studentId);
+
         const m = await contract.methods.viewMarksheet(studentId).call();
 
         if (m.professorAddress.toLowerCase() === account.toLowerCase()) {

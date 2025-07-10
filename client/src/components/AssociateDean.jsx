@@ -147,7 +147,7 @@ const AssociateDean = () => {
       const updated = await contract.methods.viewMarksheet(studentId).call();
       setMarksheet(updated);
 
-      // 👇 Add to validatedByMe
+      // Add to validatedByMe
       setValidatedByMe((prev) => [
         ...prev,
         {
@@ -158,7 +158,7 @@ const AssociateDean = () => {
         },
       ]);
 
-      // 👇 Remove from pendingValidation
+      // Remove from pendingValidation
       setPendingValidation((prev) =>
         prev.filter((s) => s.studentId.toString() !== studentId.toString())
       );

@@ -251,39 +251,43 @@ const AssociateDean = () => {
       <div className="lists-container">
 
         {/* ❌ Unvalidated List (collapsible) */}
-        <div className="list-box">
-          <button 
-          onClick={() => setShowPending(!showPending)}
-          disabled={!isAssociateDean}
-          >
-            ❌ Unvalidated Students {showValidated ? "▲" : "▼"}
-          </button>
+          <div className="list-box">
+            <button 
+              onClick={() => setShowPending(!showPending)}
+              disabled={!isAssociateDean}
+            >
+              ❌ Unvalidated Students {showPending ? "▲" : "▼"}
+            </button>
 
-          {showPending && pendingValidation.length > 0 && (
-            <table className="uploaded-students-table">
-              <thead>
-                <tr>
-                  <th>Student ID</th>
-                  <th>Marks</th>
-                  <th>Professor</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pendingValidation.map((s, index) => (
-                  <tr key={index}>
-                    <td>{s.studentId}</td>
-                    <td>{s.marks}</td>
-                    <td>{s.professorAddress}</td>
+            {showPending && pendingValidation.length > 0 && (
+              <table className="uploaded-students-table">
+                <thead>
+                  <tr>
+                    <th>Student ID</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+                </thead>
+                <tbody>
+                  {pendingValidation.map((s, index) => (
+                    <tr key={index}>
+                      <td>{s.studentId}</td>
+                      <td>
+                        <button
+                          onClick={() => setStudentId(s.studentId)}
+                        >
+                          Show Details
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
 
-          {showPending && pendingValidation.length === 0 && (
-            <p>No unvalidated marksheets found.</p>
-          )}
-        </div>
+            {showPending && pendingValidation.length === 0 && (
+              <p>No unvalidated marksheets found.</p>
+            )}
+          </div>
 
         {/* ✅ Validated List (collapsible) */}
         <div className="list-box">

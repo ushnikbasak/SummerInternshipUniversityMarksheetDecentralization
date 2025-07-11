@@ -155,26 +155,32 @@ const Dean = () => {
         </button>
 
         {showNotFinalized && (
-            <table className="uploaded-students-table">
-              <thead>
-                <tr>
-                  <th>Student ID</th>
-                </tr>
-              </thead>
-              <tbody>
-                {notFinalizedStudents.length > 0 ? (
-                  notFinalizedStudents.map((id, i) => (
-                    <tr key={i}>
-                      <td>{id}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td>No validated students pending finalization.</td>
+          <table className="uploaded-students-table">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {notFinalizedStudents.length > 0 ? (
+                notFinalizedStudents.map((id, i) => (
+                  <tr key={i}>
+                    <td>{id}</td>
+                    <td>
+                      <button onClick={() => setStudentId(id)}>
+                        Show Details
+                      </button>
+                    </td>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="2">No validated students pending finalization.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         )}
       </div>
 

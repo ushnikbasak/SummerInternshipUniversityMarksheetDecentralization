@@ -63,6 +63,34 @@ contract MainContract
         }
     }
 
+    function addProfessor(address _professor) external onlyDean 
+    {
+        require(_professor != address(0), "Invalid address");
+        require(!isProfessor[_professor], "Already a professor");
+        isProfessor[_professor] = true;
+    }
+
+    function removeProfessor(address _professor) external onlyDean 
+    {
+        require(_professor != address(0), "Invalid address");
+        require(isProfessor[_professor], "Not a professor");
+        isProfessor[_professor] = false;
+    }
+
+    function addAssociateDean(address _associateDean) external onlyDean 
+    {
+        require(_associateDean != address(0), "Invalid address");
+        require(!isAssociateDean[_associateDean], "Already an Associate Dean");
+        isAssociateDean[_associateDean] = true;
+    }
+
+    function removeAssociateDean(address _associateDean) external onlyDean 
+    {
+        require(_associateDean != address(0), "Invalid address");
+        require(isAssociateDean[_associateDean], "Not an Associate Dean");
+        isAssociateDean[_associateDean] = false;
+    }
+
     function studentListLength() external view returns (uint) 
     {
         return studentList.length;

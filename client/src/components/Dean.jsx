@@ -2,11 +2,15 @@ import React, { useState, useContext, useEffect } from "react";
 import { Web3Context } from "../contexts/Web3Context";
 
 const Dean = () => {
-  const { contract, account } = useContext(Web3Context);
+  const { contract, account, web3 } = useContext(Web3Context);
   const [studentId, setStudentId] = useState("");
   const [marksheet, setMarksheet] = useState(null);
   const [status, setStatus] = useState("");
   const [isDean, setIsDean] = useState(false);
+
+  const [newProfAddress, setNewProfAddress] = useState("");
+  const [newAssocDeanAddress, setNewAssocDeanAddress] = useState("");
+  const [roleChangeStatus, setRoleChangeStatus] = useState("");
 
   const [finalizedStudents, setFinalizedStudents] = useState([]);
   const [notFinalizedStudents, setNotFinalizedStudents] = useState([]);
@@ -104,6 +108,98 @@ const Dean = () => {
       setNotFinalizedStudents(notFinalized);
     } catch (err) {
       console.error("Error fetching student lists:", err);
+    }
+  };
+
+  const handleAddProfessor = async () => {
+    if (
+      !newProfAddress ||
+      newProfAddress === zeroAddress ||
+      !web3.utils.isAddress(newProfAddress)
+    ) {
+      setRoleChangeStatus("❌ Invalid professor address.");
+      return;
+    }
+
+    const confirm = window.confirm(`Are you sure you want to ADD Professor with address:\n${newProfAddress}?`);
+    if (!confirm) return;
+
+    try {
+      await contract.methods.addProfessor(newProfAddress).send({ from: account });
+      setRoleChangeStatus("✅ Professor added successfully.");
+      setNewProfAddress("");
+    } catch (err) {
+      console.error("Add professor failed:", err);
+      setRoleChangeStatus("❌ Failed to add professor.");
+    }
+  };
+
+  const handleRemoveProfessor = async () => {
+    if (
+      !newProfAddress ||
+      newProfAddress === zeroAddress ||
+      !web3.utils.isAddress(newProfAddress)
+    ) {
+      setRoleChangeStatus("❌ Invalid professor address.");
+      return;
+    }
+
+    const confirm = window.confirm(`Are you sure you want to REMOVE Professor with address:\n${newProfAddress}?`);
+    if (!confirm) return;
+
+    try {
+      await contract.methods.removeProfessor(newProfAddress).send({ from: account });
+      setRoleChangeStatus("✅ Professor removed successfully.");
+      setNewProfAddress("");
+    } catch (err) {
+      console.error("Remove professor failed:", err);
+      setRoleChangeStatus("❌ Failed to remove professor.");
+    }
+  };
+
+  const handleAddAssociateDean = async () => {
+    if (
+      !newAssocDeanAddress ||
+      newAssocDeanAddress === zeroAddress ||
+      !web3.utils.isAddress(newAssocDeanAddress)
+    ) {
+      setRoleChangeStatus("❌ Invalid associate dean address.");
+      return;
+    }
+
+    const confirm = window.confirm(`Are you sure you want to ADD Associate Dean with address:\n${newAssocDeanAddress}?`);
+    if (!confirm) return;
+    
+    try {
+      await contract.methods.addAssociateDean(newAssocDeanAddress).send({ from: account });
+      setRoleChangeStatus("✅ Associate Dean added successfully.");
+      setNewAssocDeanAddress("");
+    } catch (err) {
+      console.error("Add associate dean failed:", err);
+      setRoleChangeStatus("❌ Failed to add associate dean.");
+    }
+  };
+
+  const handleRemoveAssociateDean = async () => {
+    if (
+      !newAssocDeanAddress ||
+      newAssocDeanAddress === zeroAddress ||
+      !web3.utils.isAddress(newAssocDeanAddress)
+    ) {
+      setRoleChangeStatus("❌ Invalid associate dean address.");
+      return;
+    }
+
+    const confirm = window.confirm(`Are you sure you want to REMOVE Associate Dean with address:\n${newAssocDeanAddress}?`);
+    if (!confirm) return;
+
+    try {
+      await contract.methods.removeAssociateDean(newAssocDeanAddress).send({ from: account });
+      setRoleChangeStatus("✅ Associate Dean removed successfully.");
+      setNewAssocDeanAddress("");
+    } catch (err) {
+      console.error("Remove associate dean failed:", err);
+      setRoleChangeStatus("❌ Failed to remove associate dean.");
     }
   };
 
@@ -219,6 +315,33 @@ const Dean = () => {
               </tbody>
             </table>
         )}
+      </div>
+      <div className="role-management-box">
+        <h4>Manage Roles</h4>
+
+        <div className="list-box">
+          <input
+            type="text"
+            placeholder="Professor Address"
+            value={newProfAddress}
+            onChange={(e) => setNewProfAddress(e.target.value)}
+          />
+          <button onClick={handleAddProfessor}>Add Professor</button>
+          <button onClick={handleRemoveProfessor}>Remove Professor</button>
+        </div>
+
+        <div className="list-box">
+          <input
+            type="text"
+            placeholder="Associate Dean Address"
+            value={newAssocDeanAddress}
+            onChange={(e) => setNewAssocDeanAddress(e.target.value)}
+          />
+          <button onClick={handleAddAssociateDean}>Add Associate Dean</button>
+          <button onClick={handleRemoveAssociateDean}>Remove Associate Dean</button>
+        </div>
+
+        <p className="status-message">{roleChangeStatus}</p>
       </div>
     </div>
   );

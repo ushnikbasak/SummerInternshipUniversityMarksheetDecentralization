@@ -442,3 +442,9 @@ hr {
 .list-box button:hover {
   background-color: #555;
 }
+
+.role-management-box {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 1px solid #ccc;
+}

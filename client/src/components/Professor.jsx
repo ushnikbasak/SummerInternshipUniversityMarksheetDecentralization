@@ -91,25 +91,27 @@ const Professor = () => {
 
   return (
     <div className="form-box">
-      <h3>Professor Panel</h3>
-      <p>Connected as: {account || "Not connected"}</p>
-      <input
-        type="number"
-        placeholder="Student ID"
-        value={studentId}
-        onChange={(e) => setStudentId(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Marks"
-        value={marks}
-        onChange={(e) => setMarks(e.target.value)}
-      />
-      <button onClick={handleUpload} disabled={!isProfessor}>
-        Upload Marksheet
-      </button>
-      {!isProfessor && <p style={{ color: "red" }}>Only a professor can upload marksheets.</p>}
-      <p>{status}</p>
+      <div className="upload-form">
+        <h3>Professor Panel</h3>
+        <p>Connected as: {account || "Not connected"}</p>
+        <input
+          type="number"
+          placeholder="Student ID"
+          value={studentId}
+          onChange={(e) => setStudentId(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Marks"
+          value={marks}
+          onChange={(e) => setMarks(e.target.value)}
+        />
+        <button onClick={handleUpload} disabled={!isProfessor}>
+          Upload Marksheet
+        </button>
+        {!isProfessor && <p style={{ color: "red" }}>Only a professor can upload marksheets.</p>}
+        <p>{status}</p>
+      </div>
 
       <div className="list-box">
         <button

@@ -6,7 +6,7 @@ const Verifier = () => {
   const [studentId, setStudentId] = useState("");
   const [marks, setMarks] = useState("");
   const [professorAddress, setProfessorAddress] = useState("");
-  const [isValidated, setIsValidated] = useState(true);
+  const isValidated = true;
   const [validatedBy, setValidatedBy] = useState("");
   const [timestamp, setTimestamp] = useState("");
   const [result, setResult] = useState("");
@@ -36,7 +36,7 @@ const Verifier = () => {
 
   return (
     <div className="form-box">
-      <h3>Verifier Panel (Employer/Third Party)</h3>
+      <h3>Verifier Panel</h3>
       <br></br>
       <input
         type="number"

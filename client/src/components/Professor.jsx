@@ -132,7 +132,7 @@ const Professor = () => {
                   <th>Student ID</th>
                   <th>Marks</th>
                   <th>Validated</th>
-                  <th>Final Uploaded</th>
+                  <th>Uploaded by Dean</th>
                 </tr>
               </thead>
               <tbody>

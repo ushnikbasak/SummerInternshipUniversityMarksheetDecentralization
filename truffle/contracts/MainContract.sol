@@ -42,25 +42,9 @@ contract MainContract
         _;
     }
 
-    constructor(address[] memory _professors, address[] memory _associateDeans) 
+    constructor() 
     {
         dean = msg.sender;
-
-        require(_professors.length > 0, "No professors provided");
-        require(_associateDeans.length > 0, "No associate deans provided");
-
-
-        for (uint i = 0; i < _professors.length; i++) 
-        {
-            require(_professors[i] != address(0), "Professor address cannot be zero");
-            isProfessor[_professors[i]] = true;
-        }
-
-        for (uint i = 0; i < _associateDeans.length; i++) 
-        {
-            require(_associateDeans[i] != address(0), "Associate Dean address cannot be zero");
-            isAssociateDean[_associateDeans[i]] = true;
-        }
     }
 
     function addProfessor(address _professor) external onlyDean 

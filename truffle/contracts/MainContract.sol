@@ -42,27 +42,43 @@ contract MainContract
         _;
     }
 
-    constructor(address[] memory _professors, address[] memory _associateDeans) 
+    constructor() 
     {
         dean = msg.sender;
-
-        require(_professors.length > 0, "No professors provided");
-        require(_associateDeans.length > 0, "No associate deans provided");
-
-
-        for (uint i = 0; i < _professors.length; i++) 
-        {
-            require(_professors[i] != address(0), "Professor address cannot be zero");
-            isProfessor[_professors[i]] = true;
-        }
-
-        for (uint i = 0; i < _associateDeans.length; i++) 
-        {
-            require(_associateDeans[i] != address(0), "Associate Dean address cannot be zero");
-            isAssociateDean[_associateDeans[i]] = true;
-        }
     }
 
+    function addProfessor(address _professor) external onlyDean 
+    {
+        require(_professor != address(0), "Invalid address");
+        require(!isProfessor[_professor], "Already a professor");
+        isProfessor[_professor] = true;
+    }
+
+    function removeProfessor(address _professor) external onlyDean 
+    {
+        require(_professor != address(0), "Invalid address");
+        require(isProfessor[_professor], "Not a professor");
+        isProfessor[_professor] = false;
+    }
+
+    function addAssociateDean(address _associateDean) external onlyDean 
+    {
+        require(_associateDean != address(0), "Invalid address");
+        require(!isAssociateDean[_associateDean], "Already an Associate Dean");
+        isAssociateDean[_associateDean] = true;
+    }
+
+    function removeAssociateDean(address _associateDean) external onlyDean 
+    {
+        require(_associateDean != address(0), "Invalid address");
+        require(isAssociateDean[_associateDean], "Not an Associate Dean");
+        isAssociateDean[_associateDean] = false;
+    }
+
+    function studentListLength() external view returns (uint) 
+    {
+        return studentList.length;
+    }
 
     function upload(uint _studentId, uint _marks) external onlyProfessor 
     {
@@ -71,6 +87,8 @@ contract MainContract
         marksheets[_studentId].studentId = _studentId;
         marksheets[_studentId].marks = _marks;
         marksheets[_studentId].professorAddress = msg.sender;
+
+        studentList.push(_studentId);
     }
 
     function validate(uint _studentId, uint _nonce) external onlyAssociateDean 

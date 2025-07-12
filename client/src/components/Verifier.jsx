@@ -6,7 +6,7 @@ const Verifier = () => {
   const [studentId, setStudentId] = useState("");
   const [marks, setMarks] = useState("");
   const [professorAddress, setProfessorAddress] = useState("");
-  const [isValidated, setIsValidated] = useState(true);
+  const isValidated = true;
   const [validatedBy, setValidatedBy] = useState("");
   const [timestamp, setTimestamp] = useState("");
   const [result, setResult] = useState("");
@@ -36,39 +36,46 @@ const Verifier = () => {
 
   return (
     <div className="form-box">
-      <h3>Verifier Panel (Employer/Third Party)</h3>
-      <input
-        type="number"
-        placeholder="Student ID"
-        value={studentId}
-        onChange={(e) => setStudentId(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Marks"
-        value={marks}
-        onChange={(e) => setMarks(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Professor Address"
-        value={professorAddress}
-        onChange={(e) => setProfessorAddress(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Validated By (Associate Dean)"
-        value={validatedBy}
-        onChange={(e) => setValidatedBy(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Validation Timestamp"
-        value={timestamp}
-        onChange={(e) => setTimestamp(e.target.value)}
-      />
-      <button onClick={handleVerify}>Verify Marksheet</button>
-      <p>{result}</p>
+      <h3>Verifier Panel</h3>
+      <div className="upload-form">
+        <input
+          type="number"
+          placeholder="Student ID"
+          value={studentId}
+          onChange={(e) => setStudentId(e.target.value)}
+        />
+        <br></br><br></br>
+        <input
+          type="number"
+          placeholder="Marks"
+          value={marks}
+          onChange={(e) => setMarks(e.target.value)}
+        />
+        <br></br><br></br>
+        <input
+          type="text"
+          placeholder="Professor Address"
+          value={professorAddress}
+          onChange={(e) => setProfessorAddress(e.target.value)}
+        />
+        <br></br><br></br>
+        <input
+          type="text"
+          placeholder="Validated By (Associate Dean)"
+          value={validatedBy}
+          onChange={(e) => setValidatedBy(e.target.value)}
+        />
+        <br></br><br></br>
+        <input
+          type="number"
+          placeholder="Validation Timestamp"
+          value={timestamp}
+          onChange={(e) => setTimestamp(e.target.value)}
+        />
+        <br></br><br></br>
+        <button onClick={handleVerify}>Verify Marksheet</button>
+        <p>{result}</p>
+      </div>
     </div>
   );
 };

@@ -91,8 +91,8 @@ const Professor = () => {
 
   return (
     <div className="form-box">
+      <h3>Professor Panel</h3>
       <div className="upload-form">
-        <h3>Professor Panel</h3>
         <p>Connected as: {account || "Not connected"}</p>
         <input
           type="number"
@@ -113,7 +113,7 @@ const Professor = () => {
         <p>{status}</p>
       </div>
 
-      <div className="list-box">
+      <div className="professor-list-box">
         <button
           onClick={async () => {
             if (!showUploaded) {
@@ -128,26 +128,26 @@ const Professor = () => {
         </button>
 
         {showUploaded && uploadedStudents.length > 0 && (
-            <table className="uploaded-students-table">
-              <thead>
-                <tr>
-                  <th>Student ID</th>
-                  <th>Marks</th>
-                  <th>Validated</th>
-                  <th>Uploaded by Dean</th>
+          <table className="uploaded-students-table">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Marks</th>
+                <th>Validated</th>
+                <th>Uploaded by Dean</th>
+              </tr>
+            </thead>
+            <tbody>
+              {uploadedStudents.map((s, index) => (
+                <tr key={index}>
+                  <td>{s.studentId}</td>
+                  <td>{s.marks}</td>
+                  <td>{s.isValidated ? "✅" : "❌"}</td>
+                  <td>{s.isUploaded ? "✅" : "❌"}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {uploadedStudents.map((s, index) => (
-                  <tr key={index}>
-                    <td>{s.studentId}</td>
-                    <td>{s.marks}</td>
-                    <td>{s.isValidated ? "✅" : "❌"}</td>
-                    <td>{s.isUploaded ? "✅" : "❌"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+              ))}
+            </tbody>
+          </table>
         )}
 
         {showUploaded && uploadedStudents.length === 0 && (

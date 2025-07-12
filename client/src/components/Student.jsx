@@ -49,30 +49,31 @@ const Student = () => {
   return (
     <div className="form-box">
       <h3>Student Panel</h3>
+      <div className="upload-form">
+        <input
+          type="number"
+          placeholder="Enter your Student ID"
+          value={studentId}
+          onChange={(e) => setStudentId(e.target.value)}
+        />
+        <button onClick={fetchStudentDetails}>View Marksheet</button>
 
-      <input
-        type="number"
-        placeholder="Enter your Student ID"
-        value={studentId}
-        onChange={(e) => setStudentId(e.target.value)}
-      />
-      <button onClick={fetchStudentDetails}>View Marksheet</button>
+        {status && <p className="status-message">{status}</p>}
 
-      {status && <p className="status-message">{status}</p>}
-
-      {data && (
-        <div className="marksheet-details">
-          <h4>Marksheet Details</h4>
-          <p><strong>Student ID:</strong> {data.studentId}</p>
-          <p><strong>Marks:</strong> {data.marks}</p>
-          <p><strong>Professor Address:</strong> {data.professorAddress}</p>
-          <p><strong>Validated:</strong> {data.isValidated ? "Yes" : "No"}</p>
-          <p><strong>Validated By:</strong> {data.validatedBy}</p>
-          <p><strong>Validation Timestamp:</strong> {data.timestamp}</p>
-          <p><strong>Uploaded by Dean:</strong> {data.isUploaded ? "Yes" : "No"}</p>
-          <p><strong>Uploaded By (Dean):</strong> {data.uploadedBy}</p>
-        </div>
-      )}
+        {data && (
+          <div className="marksheet-details">
+            <p><strong>Marksheet Details:</strong></p>
+            <p><strong>Student ID:</strong> {data.studentId}</p>
+            <p><strong>Marks:</strong> {data.marks}</p>
+            <p><strong>Professor Address:</strong> {data.professorAddress}</p>
+            <p><strong>Validated:</strong> {data.isValidated ? "Yes" : "No"}</p>
+            <p><strong>Validated By:</strong> {data.validatedBy}</p>
+            <p><strong>Validation Timestamp:</strong> {data.timestamp}</p>
+            <p><strong>Uploaded by Dean:</strong> {data.isUploaded ? "Yes" : "No"}</p>
+            <p><strong>Uploaded By (Dean):</strong> {data.uploadedBy}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

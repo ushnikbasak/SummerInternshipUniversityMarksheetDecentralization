@@ -206,139 +206,156 @@ const Dean = () => {
   return (
     <div className="form-box">
       <h3>Dean Panel</h3>
-      <p>Connected as: {account || "Not connected"}</p>
+      <div className="upload-form">
+        <p>Connected as: {account || "Not connected"}</p>
 
-      <input
-        type="number"
-        placeholder="Enter Student ID"
-        value={studentId}
-        onChange={(e) => setStudentId(e.target.value)}
-      />
+        <input
+          type="number"
+          placeholder="Enter Student ID"
+          value={studentId}
+          onChange={(e) => setStudentId(e.target.value)}
+        />
 
-      {marksheet && marksheet.professorAddress !== zeroAddress && (
-        <div className="marksheet-details">
-          <h4>Marksheet Details (from blockchain)</h4>
-          <p><strong>Student ID:</strong> {marksheet.studentId}</p>
-          <p><strong>Marks:</strong> {marksheet.marks}</p>
-          <p><strong>Professor Address:</strong> {marksheet.professorAddress}</p>
-          <p><strong>Validated:</strong> {marksheet.isValidated ? "Yes" : "No"}</p>
-          <p><strong>Validated By:</strong> {marksheet.validatedBy}</p>
-          <p><strong>Validation Timestamp:</strong> {marksheet.timestamp}</p>
-          <p><strong>Finalized:</strong> {marksheet.isUploaded ? "Yes" : "No"}</p>
-        </div>
-      )}
+        {marksheet && marksheet.professorAddress !== zeroAddress && (
+          <div className="marksheet-details">
+            <p><strong>Marksheet Details (from blockchain)</strong></p>
+            <p><strong>Student ID:</strong> {marksheet.studentId}</p>
+            <p><strong>Marks:</strong> {marksheet.marks}</p>
+            <p><strong>Professor Address:</strong> {marksheet.professorAddress}</p>
+            <p><strong>Validated:</strong> {marksheet.isValidated ? "Yes" : "No"}</p>
+            <p><strong>Validated By:</strong> {marksheet.validatedBy}</p>
+            <p><strong>Validation Timestamp:</strong> {marksheet.timestamp}</p>
+            <p><strong>Finalized:</strong> {marksheet.isUploaded ? "Yes" : "No"}</p>
+          </div>
+        )}
 
-      <button
-        onClick={handleFinalize}
-        disabled={!isDean || !marksheet || !marksheet.isValidated || marksheet.isUploaded}
-      >
-        Finalize Marksheet
-      </button>
-
-      {!isDean && <p style={{ color: "red" }}>Only the dean can finalize marksheets.</p>}
-      <p className="status-message">{status}</p>
-
-      <div className="list-box">
-        {/* ✅ Not Finalized First */}
         <button
-          className="collapsible-button"
-          onClick={() => {
-            setShowNotFinalized(!showNotFinalized);
-            if (!showNotFinalized) fetchStudentLists();
-          }}
+          onClick={handleFinalize}
+          disabled={!isDean || !marksheet || !marksheet.isValidated || marksheet.isUploaded}
         >
-          ❌ Not Finalized Students {showNotFinalized ? "▲" : "▼"}
+          Finalize Marksheet
         </button>
 
-        {showNotFinalized && (
-          <table className="uploaded-students-table">
-            <thead>
-              <tr>
-                <th>Student ID</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {notFinalizedStudents.length > 0 ? (
-                notFinalizedStudents.map((id, i) => (
-                  <tr key={i}>
-                    <td>{id}</td>
-                    <td>
-                      <button onClick={() => setStudentId(id)}>
-                        Show Details
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="2">No validated students pending finalization.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        )}
+        {!isDean && <p style={{ color: "red" }}>Only the dean can finalize marksheets.</p>}
+        <p className="status-message">{status}</p>
       </div>
 
       <div className="list-box">
-        <button
-          className="collapsible-button"
-          onClick={() => {
-            setShowFinalized(!showFinalized);
-            if (!showFinalized) fetchStudentLists();
-          }}
-        >
-          ✅ Finalized Students {showFinalized ? "▲" : "▼"}
-        </button>
+        <div className="student-section">
+          <button
+            className="collapsible-button"
+            onClick={() => {
+              setShowNotFinalized(!showNotFinalized);
+              if (!showNotFinalized) fetchStudentLists();
+            }}
+          >
+            ❌ Not Finalized Students {showNotFinalized ? "▲" : "▼"}
+          </button>
 
-        {showFinalized && finalizedStudents.length > 0 && (
+          {showNotFinalized && (
             <table className="uploaded-students-table">
               <thead>
                 <tr>
                   <th>Student ID</th>
-                  <th>Marks</th>
-                  <th>Professor</th>
-                  <th>Validated By</th>
-                  <th>Timestamp</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {finalizedStudents.map((s, i) => (
-                  <tr key={i}>
-                    <td>{s.studentId}</td>
-                    <td>{s.marks}</td>
-                    <td>{s.professorAddress}</td>
-                    <td>{s.validatedBy}</td>
-                    <td>{s.timestamp}</td>
+                {notFinalizedStudents.length > 0 ? (
+                  notFinalizedStudents.map((s, i) => (
+                    <tr key={i}>
+                      <td>{s.studentId}</td>
+                      <td>
+                        <button 
+                        onClick={() => {
+                          setStudentId(s.studentId);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="2">No validated students pending finalization.</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
-        )}
+          )}
+        </div>
+
+        <div className="student-section">
+          <button
+            className="collapsible-button"
+            onClick={() => {
+              setShowFinalized(!showFinalized);
+              if (!showFinalized) fetchStudentLists();
+            }}
+          >
+            ✅ Finalized Students {showFinalized ? "▲" : "▼"}
+          </button>
+
+          {showFinalized && (
+            <table className="uploaded-students-table">
+              <thead>
+                <tr>
+                  <th>Student ID</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {finalizedStudents.length > 0 ? (
+                  finalizedStudents.map((s, i) => (
+                    <tr key={i}>
+                      <td>{s.studentId}</td>
+                      <td>
+                        <button 
+                        onClick={() => {
+                          setStudentId(s.studentId);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}>
+                          Show Details
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="2">No finalized students available.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
+      <hr></hr>
       <div className="role-management-box">
         <h4>Manage Roles</h4>
 
         <div className="list-box">
-          <input
-            type="text"
-            placeholder="Professor Address"
-            value={newProfAddress}
-            onChange={(e) => setNewProfAddress(e.target.value)}
-          />
-          <button onClick={handleAddProfessor}>Add Professor</button>
-          <button onClick={handleRemoveProfessor}>Remove Professor</button>
-        </div>
+            <input
+              type="text"
+              placeholder="Professor Address"
+              value={newProfAddress}
+              onChange={(e) => setNewProfAddress(e.target.value)}
+            />
+            
+            <button onClick={handleAddProfessor}>＋ Add Professor</button>
+            <button onClick={handleRemoveProfessor}>－ Remove Professor</button>
+          
+            <hr></hr>
 
-        <div className="list-box">
-          <input
-            type="text"
-            placeholder="Associate Dean Address"
-            value={newAssocDeanAddress}
-            onChange={(e) => setNewAssocDeanAddress(e.target.value)}
-          />
-          <button onClick={handleAddAssociateDean}>Add Associate Dean</button>
-          <button onClick={handleRemoveAssociateDean}>Remove Associate Dean</button>
+            <input
+              type="text"
+              placeholder="Associate Dean Address"
+              value={newAssocDeanAddress}
+              onChange={(e) => setNewAssocDeanAddress(e.target.value)}
+            />
+
+            <button onClick={handleAddAssociateDean}>＋ Add Associate Dean</button>
+            <button onClick={handleRemoveAssociateDean}>－ Remove Associate Dean</button>
         </div>
 
         <p className="status-message">{roleChangeStatus}</p>

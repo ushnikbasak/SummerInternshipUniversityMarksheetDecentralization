@@ -418,13 +418,16 @@ hr {
 }
 
 .list-box {
-  flex: 1;
-  min-width: 30rem;
-  max-width: 48%;
-  background-color: #f9f9f9;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #fdf5e6;
   padding: 1.2rem;
   border-radius: 1rem;
   box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  margin: 3rem auto;
 }
 
 .list-box button {
@@ -444,30 +447,100 @@ hr {
 }
 
 .role-management-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-top: 2rem;
   padding: 1rem;
-  border-top: 1px solid #ccc;
+  width: 40%;
+  margin: 3rem auto;
+}
+
+.role-management-box h4 {
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: -1.4rem;
+  color: #222;
+}
+
+.role-management-box input{
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 1rem;
+  border: 1px solid #333;
+  border-radius: 0.5rem;
+  font-size: 1.4rem;
+  font-family: sans-serif;
+  text-align: center;
 }
 
 .form-box {
-  display: flex;
+  text-align: center;
   gap: 2rem;
   flex-wrap: wrap;
   margin-top: 3rem;
+  margin: 3rem auto;       /* ✅ Horizontally center it */
+  width: 90%;      /* Or set a fixed width like 90% or 60rem */
+  max-width: 90%;
+}
+
+.form-box h3 {
+  width: 100%;
+  text-align: center;
+  font-size: 2.6rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #222;
+}
+
+.professor-list-box {
+  flex: 1 1 40rem; /* Flexible with a minimum width of 40rem */
+  display: flex;
+  flex-direction: column; /* Stack button and table vertically */
+  background-color: #fdf5e6;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+  width: 100%; /* Ensure it takes up full width within the parent */
+  max-width: 48%; /* Limit to 48% of the available width */
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto; /* Center the div horizontally */
+}
+
+.professor-list-box button {
+  background-color: #333;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  width: 100%; /* Make button span full width */
+}
+
+.professor-list-box button:hover {
+  background-color: #555;
 }
 
 /* Style for the upload form */
 .upload-form {
+  margin: 3rem auto;
   flex: 1;
   min-width: 30rem;
-  max-width: 48%;
-  background-color: #f9f9f9;
+  max-width: 60rem;
+  background-color: #fdf5e6;
   padding: 1.2rem;
   border-radius: 1rem;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Heading */
 .upload-form h3 {
   margin-bottom: 1.5rem;
   font-size: 2rem;
@@ -475,24 +548,23 @@ hr {
   text-align: center;
 }
 
-/* Paragraphs */
 .upload-form p {
   margin: 1rem 0;
-  color: #777;
+  color: #444;
+  font-size: 1.6rem;
 }
 
-/* Input fields */
 .upload-form input {
   width: 100%;
   padding: 0.8rem 1.2rem;
   margin-bottom: 1rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #333;
   border-radius: 0.5rem;
   font-size: 1.4rem;
   font-family: sans-serif;
+  text-align: center;
 }
 
-/* Button matches list-box button */
 .upload-form button {
   background-color: #333;
   color: white;
@@ -514,4 +586,9 @@ hr {
 .upload-form button:disabled {
   background-color: #999;
   cursor: not-allowed;
+}
+
+.student-section {
+  flex: 1;
+  min-width: 30rem;
 }

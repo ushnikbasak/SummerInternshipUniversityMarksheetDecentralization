@@ -176,82 +176,83 @@ const AssociateDean = () => {
 
   return (
     <div className="form-box">
-      <br></br>
       <h3>Associate Dean Panel</h3>
-      <p>Connected as: {account || "Not connected"}</p>
-      <input
-        type="number"
-        placeholder="Student ID"
-        value={studentId}
-        onChange={(e) => setStudentId(e.target.value)}
-      />
+      <div className="upload-form">
+        
+        <p>Connected as: {account || "Not connected"}</p>
+        <input
+          type="number"
+          placeholder="Student ID"
+          value={studentId}
+          onChange={(e) => setStudentId(e.target.value)}
+        />
 
-      {marksheet && marksheet.professorAddress !== zeroAddress && (
-        <div className="marksheet-details">
-          <h4>Marksheet Details (from blockchain)</h4>
-          <p>
-            <strong>Student ID:</strong> {marksheet.studentId.toString()}
-          </p>
-          <p>
-            <strong>Marks:</strong> {marksheet.marks.toString()}
-          </p>
-          <p>
-            <strong>Professor Address:</strong> {marksheet.professorAddress}
-          </p>
-          <p>
-            <strong>Validated:</strong> {marksheet.isValidated ? "Yes" : "No"}
-          </p>
-          {marksheet.isValidated && (
-            <>
-              <p>
-                <strong>Validated By:</strong> {marksheet.validatedBy}
-              </p>
-              <p>
-                <strong>Validation Timestamp:</strong> {marksheet.timestamp.toString()}
-              </p>
-            </>
-          )}
-        </div>
-      )}
+        {marksheet && marksheet.professorAddress !== zeroAddress && (
+          <div className="marksheet-details">
+            <p><strong>Marksheet Details (from blockchain)</strong></p>
+            <p>
+              <strong>Student ID:</strong> {marksheet.studentId.toString()}
+            </p>
+            <p>
+              <strong>Marks:</strong> {marksheet.marks.toString()}
+            </p>
+            <p>
+              <strong>Professor Address:</strong> {marksheet.professorAddress}
+            </p>
+            <p>
+              <strong>Validated:</strong> {marksheet.isValidated ? "Yes" : "No"}
+            </p>
+            {marksheet.isValidated && (
+              <>
+                <p>
+                  <strong>Validated By:</strong> {marksheet.validatedBy}
+                </p>
+                <p>
+                  <strong>Validation Timestamp:</strong> {marksheet.timestamp.toString()}
+                </p>
+              </>
+            )}
+          </div>
+        )}
 
-      <button
-        onClick={calculateNonce}
-        disabled={
-          !studentId ||
-          !marksheet ||
-          marksheet.isValidated ||
-          (marksheet && marksheet.professorAddress === zeroAddress) ||
-          !isAssociateDean
-        }
-      >
-        Calculate Nonce (PoW)
-      </button>
-      <button
-        onClick={handleValidate}
-        disabled={
-          nonce === null ||
-          !studentId ||
-          !marksheet ||
-          marksheet.isValidated ||
-          (marksheet && marksheet.professorAddress === zeroAddress) ||
-          !isAssociateDean
-        }
-      >
-        Validate Marksheet
-      </button>
-      {!isAssociateDean && <p style={{ color: "red" }}>Only an associate dean can validate marksheets.</p>}
-      <p className="status-message">{status}</p>
-      {nonce !== null && (
-        <p>
-          Calculated Nonce: <strong>{nonce}</strong>
-        </p>
-      )}
-    
+        <button
+          onClick={calculateNonce}
+          disabled={
+            !studentId ||
+            !marksheet ||
+            marksheet.isValidated ||
+            (marksheet && marksheet.professorAddress === zeroAddress) ||
+            !isAssociateDean
+          }
+        >
+          Calculate Nonce (PoW)
+        </button>
+        <button
+          onClick={handleValidate}
+          disabled={
+            nonce === null ||
+            !studentId ||
+            !marksheet ||
+            marksheet.isValidated ||
+            (marksheet && marksheet.professorAddress === zeroAddress) ||
+            !isAssociateDean
+          }
+        >
+          Validate Marksheet
+        </button>
+        {!isAssociateDean && <p style={{ color: "red" }}>Only an associate dean can validate marksheets.</p>}
+        <p className="status-message">{status}</p>
+        {nonce !== null && (
+          <p>
+            Calculated Nonce: <strong>{nonce}</strong>
+          </p>
+        )}
+      </div>
 
       <div className="lists-container">
 
         {/* ❌ Unvalidated List (collapsible) */}
-          <div className="list-box">
+          <div className="professor-list-box">
             <button 
               onClick={() => setShowPending(!showPending)}
               disabled={!isAssociateDean}
@@ -259,7 +260,7 @@ const AssociateDean = () => {
               ❌ Unvalidated Students {showPending ? "▲" : "▼"}
             </button>
 
-            {showPending && pendingValidation.length > 0 && (
+            {showPending && (
               <table className="uploaded-students-table">
                 <thead>
                   <tr>
@@ -268,29 +269,34 @@ const AssociateDean = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {pendingValidation.map((s, index) => (
-                    <tr key={index}>
-                      <td>{s.studentId}</td>
-                      <td>
-                        <button
-                          onClick={() => setStudentId(s.studentId)}
-                        >
-                          Show Details
-                        </button>
-                      </td>
+                  {pendingValidation.length > 0 ? (
+                    pendingValidation.map((s, index) => (
+                      <tr key={index}>
+                        <td>{s.studentId}</td>
+                        <td>
+                          <button
+                            onClick={() => {
+                              setStudentId(s.studentId);
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                          >
+                            Show Details
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="2">No validated marksheets by you yet.</td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
-            )}
-
-            {showPending && pendingValidation.length === 0 && (
-              <p>No unvalidated marksheets found.</p>
             )}
           </div>
 
         {/* ✅ Validated List (collapsible) */}
-        <div className="list-box">
+        <div className="professor-list-box">
           <button 
           onClick={() => setShowValidated(!showValidated)}
           disabled={!isAssociateDean}
@@ -298,31 +304,38 @@ const AssociateDean = () => {
             ✅ Validated Students {showValidated ? "▲" : "▼"}
           </button>
 
-          {showValidated && validatedByMe.length > 0 && (
+          {showValidated && (
             <table className="uploaded-students-table">
               <thead>
                 <tr>
                   <th>Student ID</th>
-                  <th>Marks</th>
-                  <th>Professor</th>
-                  <th>Timestamp</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {validatedByMe.map((s, index) => (
-                  <tr key={index}>
-                    <td>{s.studentId}</td>
-                    <td>{s.marks}</td>
-                    <td>{s.professorAddress}</td>
-                    <td>{s.timestamp}</td>
+                {validatedByMe.length > 0 ? (
+                  validatedByMe.map((s, index) => (
+                    <tr key={index}>
+                      <td>{s.studentId}</td>
+                      <td>
+                        <button
+                          onClick={() => {
+                            setStudentId(s.studentId);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                        >
+                          Show Details
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="2">No validated marksheets by you yet.</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
-          )}
-
-          {showValidated && validatedByMe.length === 0 && (
-            <p>No validated marksheets by you yet.</p>
           )}
         </div>
       </div>

@@ -251,8 +251,8 @@ const AssociateDean = () => {
 
       <div className="lists-container">
 
-        {/* ❌ Unvalidated List (collapsible) */}
-          <div className="professor-list-box">
+        {/* Unvalidated List */}
+          <div className="professor-list-box"> {/* Used the classname for css code reusability */}
             <button 
               onClick={() => setShowPending(!showPending)}
               disabled={!isAssociateDean}
@@ -295,7 +295,7 @@ const AssociateDean = () => {
             )}
           </div>
 
-        {/* ✅ Validated List (collapsible) */}
+        {/* Validated List */}
         <div className="professor-list-box">
           <button 
           onClick={() => setShowValidated(!showValidated)}

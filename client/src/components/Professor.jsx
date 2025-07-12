@@ -8,7 +8,7 @@ const Professor = () => {
   const [status, setStatus] = useState("");
   const [isProfessor, setIsProfessor] = useState(false);
   const [uploadedStudents, setUploadedStudents] = useState([]);
-  const [showUploaded, setShowUploaded] = useState(false); // 👈 New state for collapsible
+  const [showUploaded, setShowUploaded] = useState(false);
 
   useEffect(() => {
     const checkRole = async () => {
@@ -41,12 +41,10 @@ const Professor = () => {
     try {
       await contract.methods.upload(studentId, marks).send({ from: account });
       setStatus("✅ Marksheet uploaded successfully!");
-
-      // Clear input fields after successful upload
       setStudentId("");
       setMarks("");
 
-      // ✅ Refresh uploaded students immediately after upload
+      //Refresh uploaded students immediately after upload
       const updatedList = await fetchMyUploadedStudents();
       setUploadedStudents(updatedList);
     } catch (err) {

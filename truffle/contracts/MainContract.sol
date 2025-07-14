@@ -123,7 +123,6 @@ contract MainContract
         require(marksheet.isValidated, "Marksheet has not been validated by an Associate Dean yet");
         require(!marksheet.isUploaded, "Marksheet has already been finalized");
 
-        studentList.push(_studentId);
         marksheet.isUploaded = true;
         marksheet.uploadedBy = dean;
     }

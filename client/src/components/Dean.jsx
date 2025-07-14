@@ -262,15 +262,16 @@ const Dean = () => {
               </thead>
               <tbody>
                 {notFinalizedStudents.length > 0 ? (
-                  notFinalizedStudents.map((s, i) => (
+                  notFinalizedStudents.map((id, i) => (
                     <tr key={i}>
-                      <td>{s.studentId}</td>
+                      <td>{id}</td>
                       <td>
                         <button 
                         onClick={() => {
-                          setStudentId(s.studentId);
+                          setStudentId(id);
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}>
+                          Show Details
                         </button>
                       </td>
                     </tr>

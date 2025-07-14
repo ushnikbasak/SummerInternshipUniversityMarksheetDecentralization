@@ -456,6 +456,13 @@ p span.code {
   text-align: center;
 }
 
+.role-management-box p {
+  width: 100%;
+  text-align: center;
+  font-size: 1.4rem;
+  margin-top: -1.4rem;
+}
+
 .form-box {
   text-align: center;
   gap: 2rem;
